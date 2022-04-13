@@ -1,34 +1,21 @@
 ﻿using NLog;
 using NLog.Targets;
+using WasmTwoWayLogging.Server.Services;
 
 namespace WasmTwoWayLogging.Server.Logging
 {
     public class LoggingHubTarget : AsyncTaskTarget
     {
-        private LoggingHubConnection? _connection;
-
-        public LoggingHubTarget(string hubUrl)
+        private readonly DebugService _debugService;
+        public LoggingHubTarget(DebugService debugService)
         {
-            _connection = new LoggingHubConnection(hubUrl);
+            _debugService = debugService;
             OptimizeBufferReuse = true;
         }
-
         protected override async Task WriteAsyncTask(LogEventInfo logEvent, CancellationToken token)
         {
             string logMessage = this.Layout.Render(logEvent);
-            if (_connection != null)
-            {
-                await _connection.Log(logMessage);
-            }
-        }
-
-        protected override async void CloseTarget()
-        {
-            if (_connection != null)
-            {
-                await _connection.DisposeAsync();
-                _connection = null;
-            }
+            await _debugService.LogToBrowser(logMessage);
         }
     }
 }

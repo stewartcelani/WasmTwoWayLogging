@@ -1,6 +1,7 @@
 ﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
+using WasmTwoWayLogging.Server.Services;
 
 namespace WasmTwoWayLogging.Server.Logging
 {
@@ -8,10 +9,10 @@ namespace WasmTwoWayLogging.Server.Logging
     {
         public static NLog.Logger Log = LogManager.GetCurrentClassLogger();
 
-        public static void Configure()
+        public static void Configure(DebugService debugService)
         {
             LoggingConfiguration config = new LoggingConfiguration();
-            string layout = "${longdate}|${level}|${callsite}|Line:${callsite-linenumber}|${message}             ${all-event-properties} ${exception:format=tostring}";
+            string layout = "${longdate}|Server|${level}|${callsite}|Line:${callsite-linenumber}|${message}             ${all-event-properties} ${exception:format=tostring}";
 
             // Log to console
             ColoredConsoleTarget consoleTarget = new ColoredConsoleTarget()
@@ -38,7 +39,7 @@ namespace WasmTwoWayLogging.Server.Logging
             config.AddRule(minLevel: NLog.LogLevel.Trace, maxLevel: NLog.LogLevel.Fatal, target: traceFileTarget);
 
             // Log to SignalR LoggingHub
-            var loggingHubTarget = new LoggingHubTarget("https://localhost:7154/hubs/logging")
+            var loggingHubTarget = new LoggingHubTarget(debugService)
             {
                 Layout = layout
             };

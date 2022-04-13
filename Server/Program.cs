@@ -1,17 +1,9 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using WasmTwoWayLogging.Server.Hubs;
 using WasmTwoWayLogging.Server.Logging;
+using WasmTwoWayLogging.Server.Services;
 
-Logger.Configure();
-Logger.Log.Info("App starting");
-// Lets log something every second to simulate legitimate log output
-System.Timers.Timer timer = new System.Timers.Timer(1000);
-timer.Elapsed += (source, e) =>
-{
-    Logger.Log.Trace("tick");
-};
-timer.Enabled = true;
-timer.Start();
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +16,28 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
+builder.Services.AddSingleton<DebugService>();
 
 var app = builder.Build();
+
+// Need to get reference to Server\Services\DebugService.cs to inject into Logging\Logger.cs::Configure
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+
+    DebugService debugService = services.GetRequiredService<DebugService>();
+    Logger.Configure(debugService);
+    Logger.Log.Info("App starting");
+    // Lets log something every second to simulate legitimate log output
+    System.Timers.Timer timer = new System.Timers.Timer(1000);
+    timer.Elapsed += (source, e) =>
+    {
+        Logger.Log.Trace("tick");
+    };
+    timer.Enabled = true;
+    timer.Start();
+}
+
 
 app.UseResponseCompression();
 

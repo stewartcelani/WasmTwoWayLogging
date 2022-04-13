@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject DebugService DebugService
-@implements IDisposable
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inject IWebAssemblyHostEnvironment HostEnvironment
 
 <div class="page">
     <div class="sidebar">
@@ -15,28 +16,9 @@
         <article class="content px-4">
             @Body
         </article>
-        @if (DebugService.ConnectToServerConsole) {
+
+        @if (HostEnvironment.Environment == "Development") {
             <ServerConsole />
         }
     </main>
 </div>
-
-@code {
-    public async Task OnChange()
-    {     
-        await InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
-    }
-
-    protected override void OnInitialized()
-    {
-        DebugService.OnChange += OnChange;                    
-    }
-
-    public void Dispose()
-    {        
-        DebugService.OnChange -= OnChange;       
-    }
-}

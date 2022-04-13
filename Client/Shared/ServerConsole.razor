@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
+@using WasmTwoWayLogging.Client.Library
 @inject DebugService DebugService
 @inject NavigationManager NavigationManager
 @implements IDisposable
@@ -8,33 +9,24 @@
 @code {
     private HubConnection? _hubConnection;
 
-    private async Task OnReceiveLogMessage(string logMessage)
+    private async Task OnReceiveLogEvent(string logMessage)
     {
-        await DebugService.AddLogMessage(logMessage);        
-    }
-
-    private async Task OnChange()
-    {   
-        await InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
-    }
+        await DebugService.HandleLogFromServer(logMessage);        
+    } 
 
     protected override async void OnInitialized()
-    {        
-        DebugService.OnChange += OnChange;
+    {                
         _hubConnection = new HubConnectionBuilder()
             .WithUrl($"{NavigationManager.BaseUri}hubs/logging")
+            .WithAutomaticReconnect(new InfiniteRetryPolicy())
             .Build();
 
-        _hubConnection.On<string>("Log", OnReceiveLogMessage);        
+        _hubConnection.On<string>("Log", OnReceiveLogEvent);        
         await _hubConnection.StartAsync();
     }
 
     public void Dispose()
-    {        
-        DebugService.OnChange -= OnChange;
+    {                
         if (_hubConnection != null)
         {            
             try
@@ -44,7 +36,7 @@
                 _hubConnection = null;
             } catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Logger.Log.Error(ex);
             } finally
             {
                 _hubConnection = null;

@@ -1,4 +1,4 @@
-namespace WasmLogToBrowser.Shared;
+namespace WasmTwoWayLogging.Shared;
 
 public class WeatherForecast
 {

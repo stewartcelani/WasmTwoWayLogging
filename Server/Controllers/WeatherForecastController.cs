@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using WasmLogToBrowser.Shared;
+using WasmTwoWayLogging.Shared;
 
-namespace WasmLogToBrowser.Server.Controllers;
+namespace WasmTwoWayLogging.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]

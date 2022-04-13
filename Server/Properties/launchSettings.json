@@ -3,17 +3,17 @@
       "windowsAuthentication": false,
       "anonymousAuthentication": true,
       "iisExpress": {
-        "applicationUrl": "http://localhost:28728",
+        "applicationUrl": "http://localhost:27728",
         "sslPort": 44393
       }
     },
     "profiles": {
-      "WasmLogToBrowser.Server": {
+      "WasmTwoWayLogging.Server": {
         "commandName": "Project",
         "dotnetRunMessages": true,
         "launchBrowser": true,
         "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-        "applicationUrl": "https://localhost:7254;http://localhost:5055",
+        "applicationUrl": "https://localhost:7154;http://localhost:5155",
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }

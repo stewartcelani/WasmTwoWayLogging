@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using WasmLogToBrowser.Server.Logging;
+using WasmTwoWayLogging.Server.Logging;
 
-namespace WasmLogToBrowser.Server.Hubs
+namespace WasmTwoWayLogging.Server.Hubs
 {
     public class LoggingHub : Hub
     {

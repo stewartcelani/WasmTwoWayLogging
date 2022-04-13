@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace WasmLogToBrowser.Client.Library
+namespace WasmTwoWayLogging.Client.Library
 {
     public class JsConsole
     {

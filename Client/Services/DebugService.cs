@@ -1,6 +1,6 @@
-﻿using WasmLogToBrowser.Client.Library;
+﻿using WasmTwoWayLogging.Client.Library;
 
-namespace WasmLogToBrowser.Client.Services
+namespace WasmTwoWayLogging.Client.Services
 {
     public class DebugService
     {

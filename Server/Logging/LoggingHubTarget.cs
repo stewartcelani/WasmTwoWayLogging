@@ -1,7 +1,7 @@
 ﻿using NLog;
 using NLog.Targets;
 
-namespace WasmLogToBrowser.Server.Logging
+namespace WasmTwoWayLogging.Server.Logging
 {
     public class LoggingHubTarget : AsyncTaskTarget
     {

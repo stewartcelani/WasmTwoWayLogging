@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.ResponseCompression;
-using WasmLogToBrowser.Server.Hubs;
-using WasmLogToBrowser.Server.Logging;
+using WasmTwoWayLogging.Server.Hubs;
+using WasmTwoWayLogging.Server.Logging;
 
 Logger.Configure();
 Logger.Log.Info("App starting");

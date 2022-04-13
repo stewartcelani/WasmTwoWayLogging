@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 
-namespace WasmLogToBrowser.Server.Logging
+namespace WasmTwoWayLogging.Server.Logging
 {
     public class LoggingHubConnection : IAsyncDisposable
     {

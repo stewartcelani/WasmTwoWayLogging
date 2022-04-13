@@ -7,6 +7,7 @@ namespace WasmTwoWayLogging.Client.Library
         private readonly IJSRuntime _jsRuntime;
         public JsConsole(IJSRuntime jSRuntime)
         {
+            Logger.Log.Trace("Ctor");
             _jsRuntime = jSRuntime;
         }
 
@@ -17,6 +18,7 @@ namespace WasmTwoWayLogging.Client.Library
 
         public async Task ClearAsync()
         {
+            Logger.Log.Trace("Top");
             await _jsRuntime.InvokeVoidAsync("console.clear");
         }
     }

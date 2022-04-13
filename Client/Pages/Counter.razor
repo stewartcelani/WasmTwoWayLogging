@@ -13,6 +13,8 @@
 
     private void IncrementCount()
     {
+        Logger.Log.Debug($"BEFORE: currentCount: {currentCount}");
         currentCount++;
+        Logger.Log.Debug($"AFTTER: currentCount: {currentCount}");
     }
 }

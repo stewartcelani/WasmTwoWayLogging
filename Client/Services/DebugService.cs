@@ -11,6 +11,7 @@ namespace WasmTwoWayLogging.Client.Services
 
         public DebugService(JsConsole console)
         {
+            Logger.Log.Trace("Ctor");
             _console = console;
         }
 
@@ -23,6 +24,7 @@ namespace WasmTwoWayLogging.Client.Services
 
         public async Task ClearLogMessages()
         {
+            Logger.Log.Trace("Top");
             LogMessages.Clear();
             await _console.ClearAsync();
             HandleOnChange();
@@ -30,6 +32,7 @@ namespace WasmTwoWayLogging.Client.Services
 
         public void ToggleConnectToServerConsole()
         {
+            Logger.Log.Trace("Top");
             ConnectToServerConsole = !ConnectToServerConsole;
             HandleOnChange();
         }

@@ -1,1 +1,3 @@
-For Medium post [Streaming Blazor (ASP.Net Core) Logs to the Browser with a custom NLog Target and SignalR](https://medium.com/@adored_coral_armadillo_894/streaming-blazor-asp-net-core-logs-to-the-browser-with-a-custom-nlog-target-and-signalr-82d900c0e3)
+For Medium post [Combine Blazor WebAssembly Client and Server Logs: Two-way log streaming with NLog and SignalR](https://medium.com/@adored_coral_armadillo_894/combine-blazor-webassembly-client-and-server-logs-two-way-log-streaming-with-nlog-and-signalr-cf45ced27082)
+
+![Alt Text](https://miro.medium.com/max/1400/1*8U_hZJqYpKrmPM3rmh6Dkw.gif)

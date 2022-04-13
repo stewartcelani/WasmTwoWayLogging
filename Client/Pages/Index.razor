@@ -1,49 +1,5 @@
 ﻿@page "/"
-@inject DebugService DebugService
-@implements IDisposable
 
-<PageTitle>Debug</PageTitle>
+<PageTitle>Index</PageTitle>
 
-<h1>Debug</h1>
-
-<input name="logtojavascriptconsole" type="checkbox" checked=@DebugService.ConnectToServerConsole @onchange="LogToJavascriptConsoleChanged"/>
-<label for="logtojavascriptconsole">Stream server logs to Javascript console</label>
-
-
-@if (DebugService.LogMessages.Count > 0)
-{
-    <hr />
-    <h3>Server Console</h3>   
-    <button style="float: right;" class="btn-sm btn-danger m-2" @onclick="DebugService.ClearLogMessages">Clear console</button>
-    <div class="console">
-        @foreach (string s in DebugService.LogMessages)
-        {
-            <div>@s</div>
-        }
-    </div>    
-}
-
-@code {
-    private void LogToJavascriptConsoleChanged(ChangeEventArgs e)
-    {
-        DebugService.ToggleConnectToServerConsole();       
-    }
-
-    public async Task OnChange()
-    {        
-        await InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
-    }
-
-    protected override void OnInitialized()
-    {
-        DebugService.OnChange += OnChange;        
-    }
-
-    public void Dispose()
-    {
-        DebugService.OnChange -= OnChange;               
-    }
-}
+<h1>Index</h1>

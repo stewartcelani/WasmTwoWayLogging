@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using WasmTwoWayLogging.Server.Logging;
 
 namespace WasmTwoWayLogging.Server.Hubs
 {
     public class LoggingHub : Hub
     {
-        public async Task Log(string logMessage)
+        public async Task LogToServer(string logMessage)
         {
-            await Clients.All.SendAsync("Log", logMessage);
+            await Clients.All.SendAsync("LogToServer", logMessage);
         }
 
         public override Task OnConnectedAsync()

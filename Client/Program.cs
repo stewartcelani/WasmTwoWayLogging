@@ -5,10 +5,11 @@ using WasmTwoWayLogging.Client;
 using WasmTwoWayLogging.Client.Library;
 using WasmTwoWayLogging.Client.Services;
 
-Logger.Configure();
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+Logger.Configure(builder.HostEnvironment.BaseAddress);
 Logger.Log.Info("App starting.");
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 

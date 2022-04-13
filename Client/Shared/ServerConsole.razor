@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
-@using WasmTwoWayLogging.Client.Library
+@using WasmTwoWayLogging.Shared
 @inject DebugService DebugService
 @inject NavigationManager NavigationManager
 @implements IDisposable
@@ -10,19 +10,46 @@
     private HubConnection? _hubConnection;
 
     private async Task OnReceiveLogEvent(string logMessage)
-    {
-        await DebugService.HandleLogFromServer(logMessage);        
+    {        
+        await DebugService.HandleLogFromServer(logMessage);                
     } 
 
+    public async Task OnChange()
+    {     
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
     protected override async void OnInitialized()
-    {                
+    {
+        Logger.Log.Trace("Top");
         _hubConnection = new HubConnectionBuilder()
             .WithUrl($"{NavigationManager.BaseUri}hubs/logging")
             .WithAutomaticReconnect(new InfiniteRetryPolicy())
             .Build();
 
-        _hubConnection.On<string>("Log", OnReceiveLogEvent);        
+        _hubConnection.Closed += async (error) =>
+        {
+            Logger.Log.Error(error);
+            await OnChange();
+        };
+        _hubConnection.Reconnecting += async (error) =>
+        {
+            Logger.Log.Error(error);
+            await OnChange();
+        };
+        _hubConnection.Reconnected += async (string? connectionId) =>
+        {
+            Logger.Log.Debug($"Reconnected with connectionId: {connectionId}");
+            await OnChange();
+        };        
+
+
+        _hubConnection.On<string>("LogToBrowser", OnReceiveLogEvent);
         await _hubConnection.StartAsync();
+        await OnChange();
     }
 
     public void Dispose()
@@ -30,7 +57,22 @@
         if (_hubConnection != null)
         {            
             try
-            {             
+            {   
+                _hubConnection.Closed -= async (error) =>
+                {
+                    Logger.Log.Error(error);
+                    await OnChange();
+                };
+                _hubConnection.Reconnecting -= async (error) =>
+                {
+                    Logger.Log.Error(error);
+                    await OnChange();
+                };
+                _hubConnection.Reconnected -= async (error) =>
+                {
+                    Logger.Log.Error(error);
+                    await OnChange();
+                };
                 _hubConnection.StopAsync();
                 _hubConnection.DisposeAsync();
                 _hubConnection = null;

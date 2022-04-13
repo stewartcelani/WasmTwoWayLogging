@@ -1,9 +1,7 @@
+global using WasmTwoWayLogging.Server.Logging;
 using Microsoft.AspNetCore.ResponseCompression;
 using WasmTwoWayLogging.Server.Hubs;
-using WasmTwoWayLogging.Server.Logging;
 using WasmTwoWayLogging.Server.Services;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +27,7 @@ using (var serviceScope = app.Services.CreateScope())
     Logger.Configure(debugService);
     Logger.Log.Info("App starting");
     // Lets log something every second to simulate legitimate log output
-    System.Timers.Timer timer = new System.Timers.Timer(1000);
+    System.Timers.Timer timer = new System.Timers.Timer(3000);
     timer.Elapsed += (source, e) =>
     {
         Logger.Log.Trace("tick");
